@@ -9,13 +9,8 @@
  * 3. no duplicate elements
  */
 
-import java.util.Arrays;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
-import java.util.function.Function;
-import java.util.stream.Collectors;
-import java.util.stream.IntStream;
 
 public class TwoSum {
 
@@ -47,5 +42,32 @@ public class TwoSum {
 
         return new int[]{-1, -1};
     }
+
+    /*
+     * Improvment: we can only scan original array one time -> TC comes to O(n)
+     * Step 1: calculate current element different from target
+     * Step 2: figure out if map already has this key -> if yes, output
+     * Step 3: if step 2 is no, put difference value to map, the next complement will output the result
+     */
+    public int[] twoSumImproved(int[] nums, int target) {
+
+        //sanity check
+        if (nums == null || nums.length < 2) {
+            return new int[]{-1, -1};
+        }
+
+        Map<Integer, Integer> transfer = new HashMap<>();
+        for (int i = 0; i < nums.length; i++) {
+            int difference = target - nums[i];
+            if (transfer.containsKey(difference) && i != transfer.get(difference)) {
+                return new int[]{transfer.get(difference), i};
+            }
+
+            transfer.put(nums[i], i);
+        }
+
+        return new int[]{-1, -1};
+    }
+
 
 }
